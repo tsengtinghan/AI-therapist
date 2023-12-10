@@ -3,9 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <title>AI Therapist</title>
-    <link rel="stylesheet" href="css/app.css">
+
+    <style> 
+
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: arial;
+        }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(240, 246, 153, 0.886);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 1s ease;
+
+            visibility: none;
+            opacity: 0;
+
+        }
+
+        .center{
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+
+        form, form *{
+            font-size: 3vh;
+
+        }
+
+        
+    </style>
 </head>
 <body>
+
+    <div class="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Wait..!</h2>
+            </div>
+            <div class="popup-body personality" onsubmit="record_personality()">
+                <p>Hi, It seems like we do not have any record for your personality type</p>
+                <p>This app output is based on your personality type</p>
+                <p>So, please take this personality test first</p>
+                <p>Click <a href="https://openpsychometrics.org/tests/IPIP-BFFM/" target="_blank">here</a> to take the test</p>
+
+
+                <Form>
+                    <table>
+                        <tr>
+                            <td>Extroversion</td>
+                            <td><input type="number" name="extroversion" min="1" max="100" required></td>
+                        </tr>
+                        <tr>
+                            <td>emotional Stability</td>
+                            <td><input type="number" name="emotional_stability" min="1" max="100" required></td>
+                        </tr>
+                        <tr>
+                            <td>Agreeableness</td>
+                            <td><input type="number" name="agreeableness" min="1" max="100" required></td>
+                        </tr>
+                        <tr>
+                            <td>Conscientiousness</td>
+                            <td><input type="number" name="conscientiousness" min="1" max="100" required></td>
+                        </tr>
+                        <tr>
+                            <td>Intellect/Imagination</td>
+                            <td><input type="number" name="intellect" min="1" max="100" required></td>
+                        </tr>
+                    </table>
+                    <input type="button" name="submit" value="Submit" onclick="record_personality()">
+                </form>
+    </div>
+
     
+
+<script>
+    var personality_popup = document.querySelector('.popup');
+
+    
+    window.addEventListener('load', function(){
+        if(localStorage.getItem('personality') == null){
+            personality_popup.style.visibility = 'visible';
+            personality_popup.style.opacity = '1';
+        }
+        else{
+            personality_popup.style.visibility = 'hidden';
+            personality_popup.style.display = 'none';
+            personality_popup.style.opacity = '0';
+        }
+    });
+
+    function record_personality(){
+        // get values
+        var extroversion = document.querySelector('input[name="extroversion"]').value;
+        var emotional_stability = document.querySelector('input[name="emotional_stability"]').value;
+        var agreeableness = document.querySelector('input[name="agreeableness"]').value;
+        var conscientiousness = document.querySelector('input[name="conscientiousness"]').value;
+        var intellect = document.querySelector('input[name="intellect"]').value;
+
+        // put in obj
+        var personality = {
+            extroversion: extroversion,
+            emotional_stability: emotional_stability,
+            agreeableness: agreeableness,
+            conscientiousness: conscientiousness,
+            intellect: intellect
+        }
+
+        // store 
+        localStorage.setItem('personality', JSON.stringify(personality));
+
+        // close popup
+        personality_popup.style.visibility = 'hidden';
+        personality_popup.style.display = 'none';
+        personality_popup.style.opacity = '0';
+
+    }
+</script>
 </body>
 </html>
