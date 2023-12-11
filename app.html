@@ -43,13 +43,24 @@
             font-size: 5vh;
             margin-top: 5vh;
         }
+        .sub-title{
+            text-align: center;
+            font-size: 3vh;
+            margin-top: 5vh;
+        }
 
         #journal_text{
             width: 100%;
             height: 50vh;
             font-size: 3vh;
             padding: 1vh;
+
+            /* dont make it resizable */
+            resize: none;
         }
+       
+
+        
 
         #save_journal{
             width: 100%;
@@ -111,9 +122,9 @@
         <h1 class="title">Journaling... Smarter</h1>
 
         <div class="center">
-            <h2>Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
-                <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Write your journal here..."></textarea>
-                <br><input type="button" value="Done" id="save_journal">
+            <h2 class="sub-title">Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
+                <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Get a prompt.." readonly></textarea>
+                <br><input type="button" value="Done" id="save_journal" disabled>
         </div>
     </div>
     
@@ -124,10 +135,11 @@
     //      (extroversion, emotional stability, agreeableness, conscientiousness, intellect),
     //      each with a number from 1 to 100
     // local storage: Journal: array of objects of strings (0.5kb each)
-    // local storage: lastjournalDate : array of objects of strings (size negelible)
+    // local storage: lastjournalDate : date (size negelible)
 
-    var personality_popup = document.querySelector('.popup');
+    let personality_popup = document.querySelector('.popup');
 
+    let hasPrompt = false
     
     window.addEventListener('load', function(){
         // if personality is not set, prompt to set it
@@ -214,23 +226,18 @@
         `;
         
         // get propmt from API
-        fetch('link to api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'apikey': 'b5f2b0c0a0e24c2a9b0b0c0a0e24c2a9'
-            },
-            body: ai_prompt
-        })
-        .then(response => response.json())
-        .then(data => {
-            // set prompt
-            document.querySelector('#prompt').innerHTML = data.prompt;
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        // fetch('link to api', {
+        // ...}
+        // Will return a prompt
+        // since we dont have a back end yet, we will use a mock prompt
         
+        // set mock prompt
+        document.querySelector('#prompt').innerHTML = 'What is something you are grateful for today?';
+
+        // get the text area
+        document.querySelector('#journal_text').readOnly = false;
+        document.querySelector('#journal_text').placeholder = 'Write your journal here..';
+        document.querySelector('#save_journal').disabled=false
     }
 </script>
 </body>
