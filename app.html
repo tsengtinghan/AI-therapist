@@ -111,13 +111,21 @@
         <h1 class="title">Journaling... Smarter</h1>
 
         <div class="center">
-            <h2>Todays prompt is: <button id="show-prompt">Show</button></h2>
+            <h2>Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
                 <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Write your journal here..."></textarea>
                 <br><input type="button" value="Done" id="save_journal">
         </div>
     </div>
     
 <script>
+
+    // Data structure
+    // local storage: Personality: object with 5 values (size negelible)
+    //      (extroversion, emotional stability, agreeableness, conscientiousness, intellect),
+    //      each with a number from 1 to 100
+    // local storage: Journal: array of objects of strings (0.5kb each)
+    // local storage: lastjournalDate : array of objects of strings (size negelible)
+
     var personality_popup = document.querySelector('.popup');
 
     
@@ -160,6 +168,51 @@
         personality_popup.style.display = 'none';
         personality_popup.style.opacity = '0';
 
+    }
+
+    function getPrompt(){
+
+        // get personality
+        let personality = JSON.parse(localStorage.getItem('personality'));
+
+        // get journals
+        let journals = JSON.parse(localStorage.getItem('journals'));
+
+        // check if journals is null
+        if(journals == null){
+            journals = [];
+        }
+        
+        journals_str = journals.join('\n\n----------------\n\n');
+
+        // create AI prompt
+        let ai_prompt = `
+        You are a therapist. You help patients by providing them with a 10-word journal prompt to write about everyday.
+        You follow three main concepts to guide how you make your prompts:
+        1. Internal family systems therapy
+        2. Cognitive behavioral therapy
+        3. You personalize the prompt based on the patient's personality type and their previous journals
+        
+        Here are some example prompts you have given to your patients in the past:
+        - What is something you are grateful for today?
+        - why are you angry at the world?
+        - What is something you are looking forward to?
+        - How are your relationships with your family?
+        - Do you feel like you are in control of your life?
+        - Are they really your friends?
+
+        Your patient today has taken a personality test and you have their results. Here are their results:
+        Extroversion: ${personality.extroversion}
+        Emotional Stability: ${personality.emotional_stability}
+        Agreeableness: ${personality.agreeableness}
+        Conscientiousness: ${personality.conscientiousness}
+        Intellect: ${personality.intellect}
+
+        ${journals.length > 0 ? 'Here are their previous journals:\n'+journals_str : ''}
+
+        What is your prompt for today?
+        `;
+        
     }
 </script>
 </body>
