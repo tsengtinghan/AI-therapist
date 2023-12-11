@@ -125,6 +125,8 @@
             <h2 class="sub-title" id="message">Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
                 <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Get a prompt.." readonly></textarea>
                 <br><input type="button" value="Done" id="save_journal" onclick="save_journal()" disabled>
+                <br><input type="button" value="Read previous Journals" id="read_journal" onclick="read_journal()">
+
         </div>
     </div>
     
@@ -252,6 +254,7 @@
         // get date
         let date = new Date();
 
+        day = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
         // get journals
         let journals = JSON.parse(localStorage.getItem('journals'));
 
@@ -260,6 +263,14 @@
             journals = [];
         }
 
+        // check if journal is empty
+        if(journal == ''){
+            return;
+        }
+
+        // add the date to the journal
+        journal = `${day}\n\n${journal}`;
+
         // add journal to journals
         journals.push(journal);
 
@@ -267,7 +278,7 @@
         localStorage.setItem('journals', JSON.stringify(journals));
 
         // store date
-        localStorage.setItem('lastjournalDate', `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`);
+        localStorage.setItem('lastjournalDate', `${}`);
 
         disableUIUntilTomorrow();
 
@@ -311,6 +322,7 @@
         document.querySelector('#journal_text').value = last_journal;
 
     }
+
 </script>
 </body>
 </html>
