@@ -122,9 +122,9 @@
         <h1 class="title">Journaling... Smarter</h1>
 
         <div class="center">
-            <h2 class="sub-title">Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
+            <h2 class="sub-title" id="message">Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
                 <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Get a prompt.." readonly></textarea>
-                <br><input type="button" value="Done" id="save_journal" disabled>
+                <br><input type="button" value="Done" id="save_journal" onclick="save_journal()" disabled>
         </div>
     </div>
     
@@ -152,6 +152,11 @@
             personality_popup.style.visibility = 'hidden';
             personality_popup.style.display = 'none';
             personality_popup.style.opacity = '0';
+        }
+
+        // if wrote today
+        if(didWriteToday()){
+            disableUIUntilTomorrow();
         }
     });
 
@@ -238,6 +243,73 @@
         document.querySelector('#journal_text').readOnly = false;
         document.querySelector('#journal_text').placeholder = 'Write your journal here..';
         document.querySelector('#save_journal').disabled=false
+    }
+
+    function save_journal(){
+        // get journal
+        let journal = document.querySelector('#journal_text').value;
+
+        // get date
+        let date = new Date();
+
+        // get journals
+        let journals = JSON.parse(localStorage.getItem('journals'));
+
+        // check if journals is null
+        if(journals == null){
+            journals = [];
+        }
+
+        // add journal to journals
+        journals.push(journal);
+
+        // store journals
+        localStorage.setItem('journals', JSON.stringify(journals));
+
+        // store date
+        localStorage.setItem('lastjournalDate', `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`);
+
+        disableUIUntilTomorrow();
+
+    }
+
+    function didWriteToday(){
+        // get last journal date
+        let lastjournalDate = localStorage.getItem('lastjournalDate');
+
+        // get today's date
+        let today = new Date();
+
+        today_date = `${today.getDate()}/${today.getMonth()}/${today.getFullYear()}`;
+        // check if last journal date is today
+        if(lastjournalDate == today_date){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function disableUIUntilTomorrow(){
+        // disable button
+        document.querySelector('#save_journal').disabled=true
+
+        // make text area read only
+        document.querySelector('#journal_text').readOnly = true;
+
+        // change button text
+        document.querySelector('#journal_text').placeholder = 'Journal saved!';
+
+        // change message
+        document.querySelector('#message').innerHTML = 'Journal saved! Good Job! Come tomorrow for a new prompt!';
+
+        // get last journal text
+        let journals = JSON.parse(localStorage.getItem('journals'));
+        let last_journal = journals[journals.length-1];
+
+        // set last journal text
+        document.querySelector('#journal_text').value = last_journal;
+
     }
 </script>
 </body>
