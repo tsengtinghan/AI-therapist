@@ -213,6 +213,24 @@
         What is your prompt for today?
         `;
         
+        // get propmt from API
+        fetch('link to api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': 'b5f2b0c0a0e24c2a9b0b0c0a0e24c2a9'
+            },
+            body: ai_prompt
+        })
+        .then(response => response.json())
+        .then(data => {
+            // set prompt
+            document.querySelector('#prompt').innerHTML = data.prompt;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        
     }
 </script>
 </body>
