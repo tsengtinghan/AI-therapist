@@ -72,6 +72,25 @@
             margin-top: 1vh;
         }
 
+        .read-journal{
+            display: none;
+        }
+
+        #read_journal, #write_journal{
+            width: 100%;
+            height: 5vh;
+            font-size: 3vh;
+            background: #f0f69978;
+            border: none;
+            border-radius: 1vh;
+            margin-top: 1vh;
+        }
+
+        .journals, .journal{
+            margin-top: 5vh;
+            font-size: 3vh;
+
+        }
     </style>
 </head>
 <body>
@@ -126,6 +145,20 @@
                 <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Get a prompt.." readonly></textarea>
                 <br><input type="button" value="Done" id="save_journal" onclick="save_journal()" disabled>
                 <br><input type="button" value="Read previous Journals" id="read_journal" onclick="read_journal()">
+
+        </div>
+    </div>
+
+    <div class="read-journal">
+        <h1 class="title">Your Journals</h1>
+
+        <div class="center">
+            <h2 class="sub-title" id="message">Here are your journals</h2>
+            <br><input type="button" value="Write new Journals!" id="write_journal" onclick="write_journal()">
+                <div class="journals">
+                    <!-- Will add journals here with Js, <div class="journal"> {journal} </div> -->
+                </div>
+                
 
         </div>
     </div>
@@ -278,7 +311,7 @@
         localStorage.setItem('journals', JSON.stringify(journals));
 
         // store date
-        localStorage.setItem('lastjournalDate', `${}`);
+        localStorage.setItem('lastjournalDate', day);
 
         disableUIUntilTomorrow();
 
@@ -323,6 +356,51 @@
 
     }
 
+    function read_journal(){
+        // get journals
+        let journals = JSON.parse(localStorage.getItem('journals'));
+
+        // check if journals is null
+        if(journals == null){
+            journals = [];
+        }
+
+        // get journals div
+        let journals_div = document.querySelector('.journals');
+
+        // clear journals div
+        journals_div.innerHTML = '';
+
+        // if no journals
+        if(journals.length == 0){
+            journals_div.innerHTML = 'You have no journals yet! Write one now!';
+        }else{
+        journals_div.innerText = `You have written ${journals.length} journal${ journals.length > 1 ?'s':''} so far!`
+        // add journals to journals div
+        journals.forEach(journal => {
+                    j_div = document.createElement('div');
+                    j_div.classList.add('journal');
+                    j_div.innerText = journal;
+                    journals_div.appendChild(j_div);
+             });
+        }
+        
+
+        // hide write journal
+        document.querySelector('.write-Journal').style.display = 'none';
+        document.querySelector('.read-journal').style.display = 'block';
+
+        
+        
+    }
+
+    function write_journal(){
+        // show write journal
+        document.querySelector('.write-Journal').style.display = 'block';
+
+        // hide read journal
+        document.querySelector('.read-journal').style.display = 'none';
+    }
 </script>
 </body>
 </html>
