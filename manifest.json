@@ -22,7 +22,7 @@
         "purpose": "any maskable"
        }
     ],
-    "start_url": "./AI-therabist/index.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#f0f699"
