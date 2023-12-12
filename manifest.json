@@ -4,7 +4,8 @@
       {
         "src": "icons/book.png",
         "type": "image/png",
-        "sizes": "448x512"
+        "sizes": "448x512",
+        "purpose": "any"
       }
     ],
     "start_url": "/index.html",
