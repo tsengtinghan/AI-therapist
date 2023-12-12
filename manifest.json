@@ -1,8 +1,10 @@
 {
     "name": "AI therapist",
+    "short_name": "AI therapist",
+    "description": "Journaling app powered by AI",
     "icons": [
       {
-        "src": "icons/book.png",
+        "src": "icons/book-144.png",
         "type": "image/png",
         "sizes": "144x144",
         "purpose": "monochrome"
