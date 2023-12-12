@@ -7,8 +7,20 @@
         "src": "icons/book-144.png",
         "type": "image/png",
         "sizes": "144x144",
-        "purpose": "monochrome"
-      }
+        "purpose": "any"
+      },
+      {
+        "src": "icons/book-192.png",
+        "type": "image/png",
+        "sizes": "192x192",
+        "purpose": "any"
+      },
+      {
+        "src": "icons/book-512.png",
+        "type": "image/png",
+        "sizes": "512x512",
+        "purpose": "any"
+       }
     ],
     "start_url": "/index.html",
     "display": "standalone"
