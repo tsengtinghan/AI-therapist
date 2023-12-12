@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AI Therapist</title>
 
     <style> 
@@ -86,11 +88,47 @@
             margin-top: 1vh;
         }
 
+        #show-prompt{
+            width: 100%;
+            height: 5vh;
+            font-size: 3vh;
+            background: #c3f66be1;
+            border: none;
+            border-radius: 1vh;
+            margin-top: 1vh;
+        }
+
         .journals, .journal{
             margin-top: 5vh;
             font-size: 3vh;
 
         }
+
+       @media screen and (max-width: 600px) {
+        .center{
+            width: 90%;
+        }
+        .title{
+            font-size: 3vh;
+        }
+        .sub-title{
+            font-size: 2vh;
+        }
+        #journal_text{
+            font-size: 2vh;
+        }
+        #save_journal{
+            font-size: 2vh;
+        }
+        #read_journal, #write_journal{
+            font-size: 2vh;
+        }
+        .journals, .journal{
+            font-size: 2vh;
+        }
+        
+       }
+
     </style>
 </head>
 <body>
@@ -141,7 +179,8 @@
         <h1 class="title">Journaling... Smarter</h1>
 
         <div class="center">
-            <h2 class="sub-title" id="message">Todays prompt is:<span id="prompt"></span> <button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
+            <h2 class="sub-title" id="message">Todays prompt is:<br><span id="prompt"></span> 
+                <br><button id="show-prompt" onclick="getPrompt()">Get Prompt</button></h2>
                 <textarea name="journal" id="journal_text" cols="30" rows="10" placeholder="Get a prompt.." readonly></textarea>
                 <br><input type="button" value="Done" id="save_journal" onclick="save_journal()" disabled>
                 <br><input type="button" value="Read previous Journals" id="read_journal" onclick="read_journal()">
@@ -175,7 +214,7 @@
     let personality_popup = document.querySelector('.popup');
 
     let hasPrompt = false
-    
+
     window.addEventListener('load', function(){
         // if personality is not set, prompt to set it
         if(localStorage.getItem('personality') == null){
@@ -271,8 +310,31 @@
         // Will return a prompt
         // since we dont have a back end yet, we will use a mock prompt
         
+        // mock prompts, will be replaced with API when available
+    let example_prompts= ["Who do you trust most? Why?",
+                            "What are your strengths in relationships (kindness, empathy, etc.)?",
+                            "How do you draw strength from loved ones?",
+                            "What do you value most in relationships (trust, respect, sense of humor, etc.)?",
+                            "What three important things have you learned from previous relationships?",
+                            "What five traits do you value most in potential partners?",
+                            "How do you show compassion to others? How can you extend that same compassion to yourself?",
+                            "What are three things working well in your current relationship? What are three things that could be better?",
+                            "What boundaries could you set in your relationships to safeguard your own well-being?",
+                            "What do you most want your children (or future children) to learn from you?",
+                            "How can you better support and appreciate your loved ones?",
+                            "What does love mean to you? How do you recognize it in a relationship?",
+                            "List three things you'd like to tell a friend, family member, or partner.",
+                            "What difficult thoughts or emotions come up most frequently for you?",
+                            "Which emotions do you find hardest to accept (guilt, anger, disappointment, etc.)? How do you handle these emotions?",
+                            "Describe a choice you regret. What did you learn from it?",
+                            "What parts of daily life cause stress, frustration, or sadness? What can you do to change those experiences?",
+                            "What are three things that can instantly disrupt a good mood and bring you down? What strategies do you use to counter these effects?",
+                            "What are three self-defeating thoughts that show up in your self-talk? How can you reframe them to encourage yourself instead?",
+                            "What go-to coping strategies help you get through moments of emotional or physical pain?",
+                            "Who do you trust with your most painful and upsetting feelings? How can you connect with them when feeling low?",
+                            "What do you fear most? Have your fears changed throughout life?"]
         // set mock prompt
-        document.querySelector('#prompt').innerHTML = 'What is something you are grateful for today?';
+        document.querySelector('#prompt').innerText = example_prompts[Math.floor(Math.random()*example_prompts.length)];
 
         // get the text area
         document.querySelector('#journal_text').readOnly = false;
