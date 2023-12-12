@@ -1,0 +1,10 @@
+{
+    "name": "AI therapist",
+    "icons": [
+      {
+        "src": "icons/book.png",
+        "type": "image/png",
+        "sizes": "448x512"
+      }
+    ]
+  }
