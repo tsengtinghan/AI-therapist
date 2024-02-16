@@ -13,16 +13,16 @@
         "src": "icons/book-192.png",
         "type": "image/png",
         "sizes": "192x192",
-        "purpose": "any maskable"
+        "purpose": "maskable"
       },
       {
         "src": "icons/book-512.png",
         "type": "image/png",
         "sizes": "512x512",
-        "purpose": "any maskable"
+        "purpose": "maskable"
        }
     ],
-    "start_url": "/index.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#f0f699"
