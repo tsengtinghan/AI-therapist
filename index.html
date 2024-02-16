@@ -269,7 +269,7 @@
 
     }
 
-    function getPrompt(){
+    async function getPrompt(){
 
         // get personality
         let personality = JSON.parse(localStorage.getItem('personality'));
@@ -285,8 +285,7 @@
         journals_str = journals.join('\n\n----------------\n\n');
 
         // create AI prompt
-        let ai_prompt = `
-        You are a therapist. You help patients by providing them with a 10-word journal prompt to write about everyday.
+        let ai_prompt = `You are a therapist. You help patients by providing them with a 10-word journal prompt to write about everyday.
         You follow three main concepts to guide how you make your prompts:
         1. Internal family systems therapy
         2. Cognitive behavioral therapy
@@ -309,9 +308,30 @@
 
         ${journals.length > 0 ? 'Here are their previous journals:\n'+journals_str : ''}
 
-        What is your prompt for today?
-        `;
-        
+        What is your prompt for today?`;
+
+        console.log(ai_prompt);
+
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': '',
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages: [{role: 'system', content: ai_prompt}],
+            }),
+        });
+        const data = await response.json();
+        let generatedPrompt = ''
+        if (data.choices && data.choices.length > 0) {
+            generatedPrompt = data.choices[0].message.content;
+            console.log(generatedPrompt);
+        } else {
+            console.error('No response or empty choices array');
+        }
+
         // get propmt from API
         // fetch('link to api', {
         // ...}
@@ -342,7 +362,8 @@
                             "Who do you trust with your most painful and upsetting feelings? How can you connect with them when feeling low?",
                             "What do you fear most? Have your fears changed throughout life?"]
         // set mock prompt
-        document.querySelector('#prompt').innerText = example_prompts[Math.floor(Math.random()*example_prompts.length)];
+        document.querySelector('#prompt').innerText = generatedPrompt
+        // example_prompts[Math.floor(Math.random()*example_prompts.length)];
 
         // get the text area
         document.querySelector('#journal_text').readOnly = false;
